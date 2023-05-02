@@ -1,10 +1,16 @@
 class Matrix<T> {
-  int rows; // sorok száma
-  int cols; // oszlopok száma
-  List<List<T>> data; // mátrix adattartalma
+  final int rows; // sorok száma
+  final int cols; // oszlopok száma
+  List<List<T>> _data;
+
+  List<List<T>> get getData => _data;
+
+  set setData(List<List<T>> value) {
+    _data = value;
+  }
 
   Matrix({required this.rows, required this.cols})
-      : data = List.generate(
+      : _data = List.generate(
           rows,
           (i) => List.filled(cols, 0 as T, growable: false),
           growable: false,
@@ -14,22 +20,33 @@ class Matrix<T> {
     if (row < 0 || row >= rows || col < 0 || col >= cols) {
       throw RangeError("Érvénytelen sor vagy oszlop index");
     }
-    data[row][col] = value;
+    _data[row][col] = value;
   }
 
   T get({required int row, required int col}) {
     if (row < 0 || row >= rows || col < 0 || col >= cols) {
       throw RangeError("Érvénytelen sor vagy oszlop index");
     }
-    return data[row][col];
+    return _data[row][col];
+  }
+
+  List<T> getFlatList() {
+    final List<T> output = [];
+    for(var rows in _data) {
+      for(var value in rows) {
+        output.add(value);
+      }
+    }
+    return output;
   }
 
   @override
   String toString() {
     String output = "\n";
-    for(var m in data) {
+    for(var m in _data) {
       output = "$output$m\n";
     }
     return "Matrix:$output";
   }
+
 }

@@ -1,70 +1,37 @@
+import "dart:async";
+
+import "package:firebase_core/firebase_core.dart";
+import "package:firebase_crashlytics/firebase_crashlytics.dart";
 import "package:flutter/material.dart";
+import "package:sudoku_flutter/firebase_options.dart";
+import "package:sudoku_flutter/ui/login/login.dart";
+import "package:sudoku_flutter/ui/main_app.dart";
+import "di/inject.dart";
+import "matrix/matrix.dart";
+import 'package:sudoku_solver_generator/sudoku_solver_generator.dart';
+
+Matrix<int> matrix = Matrix<int>(rows: 9, cols: 9);
 
 void main() {
-  runApp(const MyApp());
-}
+  runZonedGuarded(
+    () async {
+      WidgetsFlutterBinding.ensureInitialized();
+      await Firebase.initializeApp(
+          options: DefaultFirebaseOptions.currentPlatform);
+      FlutterError.onError = FirebaseCrashlytics.instance.recordFlutterError;
 
-class MyApp extends StatelessWidget {
-  const MyApp({super.key});
+      await configureDependencies();
 
-  // This widget is the root of your application.
-  @override
-  Widget build(BuildContext context) {
-    return MaterialApp(
-      title: "Flutter Sudoku Demo",
-      theme: ThemeData(
-        primarySwatch: Colors.blue,
-      ),
-      home: const MyHomePage(title: "Flutter Sudoku Demo Home Page"),
-    );
-  }
-}
+      // Generate Example
+      var sudokuGenerator = SudokuGenerator(emptySquares: 54);
+      SudokuUtilities.printSudoku(sudokuGenerator.newSudoku);
+      matrix.setData = sudokuGenerator.newSudoku;
+      print(''); // ignore: avoid_print
+      SudokuUtilities.printSudoku(sudokuGenerator.newSudokuSolved);
 
-class MyHomePage extends StatefulWidget {
-  const MyHomePage({super.key, required this.title});
-
-  final String title;
-
-  @override
-  State<MyHomePage> createState() => _MyHomePageState();
-}
-
-class _MyHomePageState extends State<MyHomePage> {
-  int _counter = 0;
-
-  void _incrementCounter() {
-    setState(() {
-      _counter++;
-    });
-  }
-
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: Text(widget.title),
-      ),
-      body: Center(
-        // Center is a layout widget. It takes a single child and positions it
-        // in the middle of the parent.
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            const Text(
-              "You have pushed the button this many times:",
-            ),
-            Text(
-              "$_counter",
-              style: Theme.of(context).textTheme.headlineMedium,
-            ),
-          ],
-        ),
-      ),
-      floatingActionButton: FloatingActionButton(
-        onPressed: _incrementCounter,
-        tooltip: "Increment",
-        child: const Icon(Icons.add),
-      ),
-    );
-  }
+      runApp(const MainApp());
+    },
+    (error, stack) => FirebaseCrashlytics.instance
+        .recordError(error, stack, printDetails: true),
+  );
 }

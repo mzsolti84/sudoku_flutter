@@ -1,0 +1,46 @@
+{
+  "project_info": {
+    "project_number": "159419806525",
+    "project_id": "flutter-sudoku-8d568",
+    "storage_bucket": "flutter-sudoku-8d568.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:159419806525:android:cb606abcd4f7565f548b54",
+        "android_client_info": {
+          "package_name": "hu.molnarzs.sudoku_flutter"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "159419806525-8r02mvj5uu6gnaqdk5t4m338qp67cv88.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDzoyj4kvxfkPVVlwLFkifRA6-LV39u6LU"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "159419806525-8r02mvj5uu6gnaqdk5t4m338qp67cv88.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "159419806525-e2jn0janjg5rggabboiu1dl6g2ndt7le.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "hu.molnarzs.sudokuFlutter"
+              }
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
