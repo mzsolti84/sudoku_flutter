@@ -30,8 +30,7 @@ class LoginBloc extends Bloc<LoginEvent, LoginState> {
     on<LoginStartLoginAnonymouslyEvent>((event, emit) async {
       emit.call(const LoginLoading());
       try {
-        String? uid = await _loginInteractor.loginUserAnonymously();
-        debugPrint(uid.toString());
+        // String? uid = await _loginInteractor.loginUserAnonymously();
         emit.call(const LoginFinished(null, true, null));
       } catch (e) {
         emit.call(LoginFinished(e, false, null));

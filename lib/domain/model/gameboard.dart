@@ -11,4 +11,13 @@ class Gameboard {
       required this.level});
 }
 
-enum Level { beginner, easy, intermediate, hard }
+enum Level {
+  beginner(value: 15),
+  easy(value: 21),
+  intermediate(value: 34),
+  hard(value: 54);
+
+  const Level({required this.value});
+
+  final int value;
+}

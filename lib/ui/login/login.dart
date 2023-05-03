@@ -35,7 +35,8 @@ class LoginContent extends StatelessWidget {
         listener: (context, state) {
           if (state is LoginFinished) {
             if (state.successfullyFinished) {
-              Navigator.pushReplacementNamed(context, '/home', arguments: state.uid);
+              // Navigator.pushReplacementNamed(context, '/home', arguments: state.uid);
+              Navigator.pushReplacementNamed(context, '/sudokuUI');
             }
             else if (state.error != null) {
               ScaffoldMessenger.of(context).showSnackBar(

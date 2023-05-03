@@ -4,11 +4,9 @@ import "package:firebase_core/firebase_core.dart";
 import "package:firebase_crashlytics/firebase_crashlytics.dart";
 import "package:flutter/material.dart";
 import "package:sudoku_flutter/firebase_options.dart";
-import "package:sudoku_flutter/ui/login/login.dart";
 import "package:sudoku_flutter/ui/main_app.dart";
 import "di/inject.dart";
 import "matrix/matrix.dart";
-import 'package:sudoku_solver_generator/sudoku_solver_generator.dart';
 
 Matrix<int> matrix = Matrix<int>(rows: 9, cols: 9);
 
@@ -21,13 +19,12 @@ void main() {
       FlutterError.onError = FirebaseCrashlytics.instance.recordFlutterError;
 
       await configureDependencies();
-
       // Generate Example
-      var sudokuGenerator = SudokuGenerator(emptySquares: 54);
-      SudokuUtilities.printSudoku(sudokuGenerator.newSudoku);
-      matrix.setData = sudokuGenerator.newSudoku;
-      print(''); // ignore: avoid_print
-      SudokuUtilities.printSudoku(sudokuGenerator.newSudokuSolved);
+      // var sudokuGenerator = SudokuGenerator(emptySquares: 54);
+      // SudokuUtilities.printSudoku(sudokuGenerator.newSudoku);
+      // matrix.setData = sudokuGenerator.newSudoku;
+      // print(''); // ignore: avoid_print
+      // SudokuUtilities.printSudoku(sudokuGenerator.newSudokuSolved);
 
       runApp(const MainApp());
     },

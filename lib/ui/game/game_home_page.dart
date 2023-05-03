@@ -1,3 +1,4 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
@@ -18,7 +19,7 @@ class GameHomePage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return BlocProvider(
-      create: (context) => getIt<GameBloc>()..add(GameGetUserUidEvent(uid)),
+      create: (context) => getIt<GameBloc>()..add(GameGetUserUidEvent(FirebaseAuth.instance.currentUser?.uid)),
       child: GameHomeContent(
         title: title,
         uid: uid,
