@@ -4,11 +4,18 @@ class Gameboard {
   final int numberOfFreeSpaces;
   final Level level;
 
-  Gameboard(
-      {required this.initPuzzle,
-      required this.solvedPuzzle,
-      required this.numberOfFreeSpaces,
-      required this.level});
+  Gameboard._({required this.initPuzzle,
+    required this.solvedPuzzle,
+    required this.numberOfFreeSpaces,
+    required this.level});
+
+
+factory Gameboard({required List<int> initPuzzle,
+  required List<int> solvedPuzzle,
+  required Level level}) {
+  return Gameboard._(initPuzzle: initPuzzle, solvedPuzzle: solvedPuzzle, numberOfFreeSpaces: level.value, level: level);
+}
+
 }
 
 enum Level {

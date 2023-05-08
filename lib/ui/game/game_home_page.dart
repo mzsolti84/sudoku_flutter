@@ -53,7 +53,8 @@ class _GameHomeContentState extends State<GameHomeContent> {
         builder: (context, state) {
           if (state is GameNewGameState) {
             list = state.puzzle;
-          } else if (state is GameLoadedUser) {
+          }
+          else if (state is GameLoadedUser) {
             currentUser = state.user;
           }
           return Column(

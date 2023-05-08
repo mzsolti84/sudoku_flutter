@@ -20,6 +20,12 @@ class GameBloc extends Bloc<GameEvent, GameState> {
       emit.call(GameNewGameState(newGameboard.initPuzzle));
     });
 
+    on<GameNewGameWithFixPuzzleEvent>((event, emit) async {
+      emit.call(GamePuzzleLoading());
+      var newGameboard = await _gameboardInteractor.fetchFixPuzzle();
+      emit.call(GameInitialWithFixPuzzle(newGameboard.initPuzzle));
+    });
+
     on<GameGetUserUidEvent>((event, emit) async {
       if (event.uid == null) {
         emit.call(GameLoadedUser(null, true));
@@ -31,6 +37,10 @@ class GameBloc extends Bloc<GameEvent, GameState> {
       } else {
         emit.call(GameLoadedUser(null, true));
       }
+    });
+
+    on<GameActionEvent>((event, emit) {
+      emit.call(GameUpdate(event.errorCode));
     });
   }
 }

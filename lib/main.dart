@@ -6,7 +6,8 @@ import "package:flutter/material.dart";
 import "package:sudoku_flutter/firebase_options.dart";
 import "package:sudoku_flutter/ui/main_app.dart";
 import "di/inject.dart";
-import "matrix/matrix.dart";
+import "domain/gameboard/matrix.dart";
+
 
 Matrix<int> matrix = Matrix<int>(rows: 9, cols: 9);
 

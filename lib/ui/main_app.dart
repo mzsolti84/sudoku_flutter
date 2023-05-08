@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:sudoku_flutter/ui/game/alter.dart';
+import 'package:sudoku_flutter/ui/game/sudoku_ui_page.dart';
 import 'package:sudoku_flutter/ui/registration/registration.dart';
 
 import 'game/game_home_page.dart';
@@ -49,7 +49,7 @@ class MainApp extends StatelessWidget {
           );
         } else if (settings.name == '/sudokuUI') {
           return MaterialPageRoute(
-            builder: (_) => const SudokuUI(),
+            builder: (_) => SudokuUIPage(),
           );
         }
       },
