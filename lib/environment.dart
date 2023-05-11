@@ -16,5 +16,5 @@ abstract class AppEnvironment{
 @Singleton(as: AppEnvironment)
 class DevEnvironment extends AppEnvironment{
   @override
-  String get userBaseUrl => 'http://localhost:8080/public/';
+  String get userBaseUrl => 'http://localhost:10122/public/';
 }

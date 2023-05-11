@@ -6,10 +6,8 @@
  * Vestibulum commodo. Ut rhoncus gravida arcu.
  */
 
-import 'package:injectable/injectable.dart';
 import 'package:sudoku_flutter/domain/interactor/position.dart';
 
-@injectable
 class Moves {
   final List<Position> _moves;
 
@@ -25,11 +23,11 @@ class Moves {
     return _moves.isNotEmpty;
   }
 
-  void add (Position position) {
+  void add(Position position) {
     _moves.add(position);
   }
 
-  void remove (Position position) {
+  void remove(Position position) {
     _moves.remove(position);
   }
 

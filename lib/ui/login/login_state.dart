@@ -21,6 +21,9 @@ class LoginFinished extends LoginState {
   const LoginFinished(this.error, this.successfullyFinished, this.uid);
 }
 
+class LoginLogoutFinished extends LoginState {
+}
+
 class LoginPasswordVisibility extends LoginState {
   final bool visibility;
 

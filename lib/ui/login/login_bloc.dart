@@ -14,13 +14,13 @@ part 'login_state.dart';
 @injectable
 class LoginBloc extends Bloc<LoginEvent, LoginState> {
   final LoginInteractor _loginInteractor;
-    //ezt másképp kellene!
 
   LoginBloc(this._loginInteractor) : super(const LoginInput()) {
     on<LoginStartLoginEvent>((event, emit) async {
       emit.call(const LoginLoading());
       try {
-        String? uid = await _loginInteractor.loginUser(event.email, event.password);
+        String? uid =
+            await _loginInteractor.loginUser(event.email, event.password);
         emit.call(LoginFinished(null, true, uid));
       } catch (e) {
         emit.call(LoginFinished(e, false, null));
@@ -30,11 +30,18 @@ class LoginBloc extends Bloc<LoginEvent, LoginState> {
     on<LoginStartLoginAnonymouslyEvent>((event, emit) async {
       emit.call(const LoginLoading());
       try {
-        // String? uid = await _loginInteractor.loginUserAnonymously();
         emit.call(const LoginFinished(null, true, null));
       } catch (e) {
         emit.call(LoginFinished(e, false, null));
       }
+    });
+
+    on<LoginLogoutEvent>((event, emit) async {
+      if (!event.isAnonymus) {
+        debugPrint('Logout user!');
+        await _loginInteractor.logoutUser();
+      }
+      emit.call(LoginLogoutFinished());
     });
 
     on<LoginVisibilityEvent>((event, emit) {

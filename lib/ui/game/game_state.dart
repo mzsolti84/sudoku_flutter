@@ -11,15 +11,18 @@ class GamePuzzleLoading extends GameState {}
 
 class GameInitialWithFixPuzzle extends GameState {
   final List<int> puzzle;
+  final List<int> solvedPuzzle;
 
-  GameInitialWithFixPuzzle(this.puzzle);
+  GameInitialWithFixPuzzle(this.puzzle, this.solvedPuzzle);
 
 }
 
 class GameNewGameState extends GameState {
   final List<int> puzzle;
+  final List<int> solvedPuzzle;
+  final bool isFromNetwork;
 
-  GameNewGameState(this.puzzle);
+  GameNewGameState(this.puzzle, this.solvedPuzzle, this.isFromNetwork);
 }
 
 class GameLoadedUser extends GameState {
@@ -31,6 +34,7 @@ class GameLoadedUser extends GameState {
 
 class GameUpdate extends GameState {
   final PuzzleErrorCode errorCode;
+  final int? hitNumber;
 
-  GameUpdate(this.errorCode);
+  GameUpdate(this.errorCode, this.hitNumber);
 }

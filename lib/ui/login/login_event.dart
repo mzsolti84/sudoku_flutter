@@ -25,7 +25,12 @@ class LoginSingInEvent extends LoginEvent {
 }
 
 class LoginRegisterStartEvent extends LoginEvent {
+}
 
+class LoginLogoutEvent extends LoginEvent {
+  final bool isAnonymus;
+
+  LoginLogoutEvent(this.isAnonymus);
 }
 
 class LoginVisibilityEvent extends LoginEvent {

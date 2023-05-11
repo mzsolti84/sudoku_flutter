@@ -14,6 +14,10 @@ class LoginInteractor {
     return _authenticationDataSource.login(email: email, password: password);
   }
 
+  Future<void> logoutUser() {
+    return _authenticationDataSource.logout();
+  }
+
   Future<String> loginUserAnonymously() {
     return _authenticationDataSource.loginAnonymously();
   }

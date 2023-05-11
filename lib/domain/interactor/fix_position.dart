@@ -1,8 +1,6 @@
 
-import 'package:injectable/injectable.dart';
 import 'package:sudoku_flutter/domain/interactor/position.dart';
 
-@injectable
 class FixPositions {
   final List<List<int>> _puzzle;
   final List<Position> _fix;

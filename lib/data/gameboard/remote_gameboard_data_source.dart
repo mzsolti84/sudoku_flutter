@@ -1,5 +1,5 @@
+import 'dart:async';
 import 'dart:core';
-import 'dart:io';
 
 import 'package:dio/dio.dart';
 import 'package:flutter/cupertino.dart';
@@ -7,6 +7,7 @@ import 'package:injectable/injectable.dart';
 import 'package:sudoku_flutter/data/gameboard/model/remote_gameboard_data.dart';
 
 import '../../common/rest_api_exception.dart';
+import '../../domain/model/gameboard.dart';
 
 @injectable
 class RemoteGameboardDataSource {
@@ -14,34 +15,29 @@ class RemoteGameboardDataSource {
 
   RemoteGameboardDataSource(this._dio);
 
-  Future<List<int>> fetchInitialPuzzle() async {
+  Future<Gameboard?> fetchPuzzle(int index) async {
     try {
-      var response = await _dio.get(
-        'newgame/34',
+      var initPuzzleResponse = await _dio.get(
+        'newgame/${Level.values[index].value}',
       );
-      if (response.statusCode == 200) {
-        var result = RemoteGameboardResponse.fromJson(response.data);
-        debugPrint(result.data.toString());
-        return result.data;
-      } else {
-        debugPrint('Hálózati hiba!');
-        return List.generate(81, (index) => 0);
+      var solvedPuzzleResponse = await _dio.get(
+        'solvedgame',
+      );
+      if (initPuzzleResponse.statusCode == 200 &&
+          solvedPuzzleResponse.statusCode == 200) {
+        var initResult =
+            RemoteGameboardResponse.fromJson(initPuzzleResponse.data);
+        var solvedResult =
+            RemoteGameboardResponse.fromJson(solvedPuzzleResponse.data);
+        debugPrint(initResult.data.toString());
+        return Gameboard(
+            initPuzzle: initResult.data,
+            solvedPuzzle: solvedResult.data,
+            level: Level.values[index]);
       }
+      return null;
     } on DioError catch (e) {
-      if (e.isNoConnectionError) {
-        debugPrint(e.toString());
-        return List.generate(81, (index) => 0);
-      } else if (e.response != null) {
-        throw RestApiException(e.response?.statusCode.toString());
-      } else {
-        rethrow;
-      }
+      return null;
     }
   }
-}
-
-extension DioErrorX on DioError {
-  bool get isNoConnectionError =>
-      type == DioErrorType.unknown &&
-      error is SocketException;
 }

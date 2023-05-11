@@ -1,6 +1,7 @@
 import 'package:bloc/bloc.dart';
 import 'package:injectable/injectable.dart';
 
+import '../../domain/gameboard/inmemory_puzzles.dart';
 import '../../domain/interactor/game_user_interactor.dart';
 import '../../domain/interactor/gameboard_interactor.dart';
 import 'game_event.dart';
@@ -16,14 +17,21 @@ class GameBloc extends Bloc<GameEvent, GameState> {
 
     on<GameNewGameEvent>((event, emit) async {
       emit.call(GamePuzzleLoading());
-      var newGameboard = await _gameboardInteractor.fetchInitialPuzzle();
-      emit.call(GameNewGameState(newGameboard.initPuzzle));
+      var newGameboard = await _gameboardInteractor.fetchPuzzle(event.level);
+
+      if (newGameboard != null) {
+        emit.call(GameNewGameState(newGameboard.initPuzzle, newGameboard.solvedPuzzle, true));
+      } else {
+        var inMemoryPuzzle = InMemoryPuzzles.fromLevel(event.level);
+        emit.call(GameNewGameState(inMemoryPuzzle.initPuzzle, inMemoryPuzzle.solvedPuzzle, false));
+      }
+
     });
 
     on<GameNewGameWithFixPuzzleEvent>((event, emit) async {
       emit.call(GamePuzzleLoading());
       var newGameboard = await _gameboardInteractor.fetchFixPuzzle();
-      emit.call(GameInitialWithFixPuzzle(newGameboard.initPuzzle));
+      emit.call(GameInitialWithFixPuzzle(newGameboard.initPuzzle, newGameboard.solvedPuzzle));
     });
 
     on<GameGetUserUidEvent>((event, emit) async {
@@ -40,7 +48,7 @@ class GameBloc extends Bloc<GameEvent, GameState> {
     });
 
     on<GameActionEvent>((event, emit) {
-      emit.call(GameUpdate(event.errorCode));
+      emit.call(GameUpdate(event.errorCode, event.hitNumber));
     });
   }
 }

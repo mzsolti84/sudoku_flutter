@@ -1,12 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_form_builder/flutter_form_builder.dart';
-import 'package:form_field_validator/form_field_validator.dart';
+import 'package:form_builder_validators/form_builder_validators.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:sudoku_flutter/ui/registration/registration_bloc.dart';
 
 import '../../di/inject.dart';
-import '../../domain/model/game_user.dart';
 import '../widgets/custom_form_button.dart';
 
 class RegistrationPage extends StatelessWidget {
@@ -66,17 +65,12 @@ class RegistrationContent extends StatelessWidget {
         child: Stack(
           fit: StackFit.expand,
           children: [
-            Positioned(
-              top: 22,
-              left: 0,
-              right: 0,
-              child: Text(
-                'Új felhasználó regisztrálása',
-                textAlign: TextAlign.center,
-                style: GoogleFonts.catamaran(
-                  fontSize: 48,
-                  color: Colors.black,
-                ),
+            Text(
+              'Új felhasználó regisztrálása',
+              textAlign: TextAlign.center,
+              style: GoogleFonts.catamaran(
+                fontSize: 34,
+                color: Colors.black,
               ),
             ),
             Positioned.fill(
@@ -109,9 +103,11 @@ FormBuilder _buildRegisterForm() {
                 name: 'email',
                 controller: emailTextFieldController,
                 keyboardType: TextInputType.emailAddress,
-                validator: MultiValidator([
-                  RequiredValidator(errorText: 'Kötelező mező!'),
-                  EmailValidator(errorText: 'Helytelen email formátum!'),
+                validator: FormBuilderValidators.compose([
+                  FormBuilderValidators.required(
+                      errorText: 'A mező nem lehet üres'),
+                  FormBuilderValidators.email(
+                      errorText: 'Érvénytelen email formátum'),
                 ]),
                 decoration: InputDecoration(
                   filled: true,
@@ -130,6 +126,9 @@ FormBuilder _buildRegisterForm() {
               FormBuilderTextField(
                 name: 'password',
                 obscureText: obscure,
+                validator: FormBuilderValidators.minLength(6,
+                    errorText:
+                        'A jelszó minimum 6 karakterből kell hogy álljon'),
                 decoration: InputDecoration(
                   filled: true,
                   fillColor: const Color.fromRGBO(38, 47, 77, 0.2),
@@ -152,6 +151,9 @@ FormBuilder _buildRegisterForm() {
               FormBuilderTextField(
                 name: 'repassword',
                 obscureText: obscure,
+                validator: FormBuilderValidators.minLength(6,
+                    errorText:
+                        'A jelszó minimum 6 karakterből kell hogy álljon'),
                 decoration: InputDecoration(
                   filled: true,
                   fillColor: const Color.fromRGBO(38, 47, 77, 0.2),
@@ -174,9 +176,8 @@ FormBuilder _buildRegisterForm() {
               const SizedBox(height: 16),
               FormBuilderTextField(
                 name: 'lastname',
-                validator: MultiValidator([
-                  RequiredValidator(errorText: 'Kötelező mező!'),
-                ]),
+                validator: FormBuilderValidators.required(
+                    errorText: 'A mező nem lehet üres'),
                 decoration: InputDecoration(
                   filled: true,
                   fillColor: const Color.fromRGBO(38, 47, 77, 0.2),
@@ -193,9 +194,8 @@ FormBuilder _buildRegisterForm() {
               const SizedBox(height: 16),
               FormBuilderTextField(
                 name: 'firstname',
-                validator: MultiValidator([
-                  RequiredValidator(errorText: 'Kötelező mező!'),
-                ]),
+                validator: FormBuilderValidators.required(
+                    errorText: 'A mező nem lehet üres'),
                 decoration: InputDecoration(
                   filled: true,
                   fillColor: const Color.fromRGBO(38, 47, 77, 0.2),
@@ -213,9 +213,8 @@ FormBuilder _buildRegisterForm() {
               FormBuilderTextField(
                 name: 'age',
                 keyboardType: TextInputType.number,
-                validator: MultiValidator([
-                  RequiredValidator(errorText: 'Kötelező mező!'),
-                ]),
+                validator: FormBuilderValidators.required(
+                    errorText: 'A mező nem lehet üres'),
                 decoration: InputDecoration(
                   filled: true,
                   fillColor: const Color.fromRGBO(38, 47, 77, 0.2),

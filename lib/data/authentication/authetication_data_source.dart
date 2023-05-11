@@ -1,12 +1,17 @@
-
 import 'package:injectable/injectable.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 
 @lazySingleton
 class AuthenticationDataSource {
-  Future<String> login({required String email, required String password}) async {
-    var result = await FirebaseAuth.instance.signInWithEmailAndPassword(email: email, password: password);
+  Future<String> login(
+      {required String email, required String password}) async {
+    var result = await FirebaseAuth.instance
+        .signInWithEmailAndPassword(email: email, password: password);
     return result.user!.uid;
+  }
+
+  Future<void> logout() async {
+    return await FirebaseAuth.instance.signOut();
   }
 
   Future<String> loginAnonymously() async {
@@ -23,10 +28,10 @@ class AuthenticationDataSource {
     }
   }
 
-  Future<String> singUp({required String email, required String password}) async {
-    var result = await FirebaseAuth.instance.createUserWithEmailAndPassword(email: email, password: password);
+  Future<String> singUp(
+      {required String email, required String password}) async {
+    var result = await FirebaseAuth.instance
+        .createUserWithEmailAndPassword(email: email, password: password);
     return result.user!.uid;
   }
-
 }
-

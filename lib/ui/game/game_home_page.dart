@@ -92,7 +92,7 @@ class _GameHomeContentState extends State<GameHomeContent> {
               ElevatedButton(
                 child: const Text('New'),
                 onPressed: () {
-                  context.read<GameBloc>().add(GameNewGameEvent());
+                  context.read<GameBloc>().add(GameNewGameEvent(2));
                 },
               ),
             ],

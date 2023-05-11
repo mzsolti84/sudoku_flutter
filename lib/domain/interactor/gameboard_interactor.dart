@@ -1,4 +1,5 @@
 import 'package:injectable/injectable.dart';
+import 'package:sudoku_flutter/domain/gameboard/inmemory_puzzles.dart';
 
 import '../../data/gameboard/remote_gameboard_data_source.dart';
 import '../model/gameboard.dart';
@@ -9,102 +10,14 @@ class GameboardInteractor {
 
   GameboardInteractor(this._remoteGameboardDataSource);
 
-  Future<Gameboard> fetchInitialPuzzle() async {
-    List<int> initialPuzzle =
-        await _remoteGameboardDataSource.fetchInitialPuzzle();
-    return Gameboard(
-        initPuzzle: initialPuzzle,
-        solvedPuzzle: [],
-        level: Level.intermediate);
+  Future<Gameboard?> fetchPuzzle(int index) async {
+    Gameboard? initialPuzzle =
+        await _remoteGameboardDataSource.fetchPuzzle(index);
+
+    return initialPuzzle;
   }
 
   Future<Gameboard> fetchFixPuzzle() async {
-    List<int> initialPuzzle = [
-      1,
-      0,
-      0,
-      0,
-      0,
-      0,
-      0,
-      0,
-      0,
-      0,
-      0,
-      0,
-      0,
-      0,
-      0,
-      0,
-      0,
-      0,
-      0,
-      0,
-      2,
-      0,
-      0,
-      0,
-      0,
-      0,
-      0,
-      0,
-      0,
-      0,
-      0,
-      0,
-      0,
-      0,
-      0,
-      0,
-      0,
-      0,
-      0,
-      0,
-      0,
-      0,
-      0,
-      0,
-      0,
-      0,
-      0,
-      0,
-      0,
-      0,
-      0,
-      0,
-      0,
-      0,
-      0,
-      0,
-      0,
-      0,
-      0,
-      0,
-      0,
-      0,
-      0,
-      0,
-      0,
-      0,
-      0,
-      0,
-      0,
-      0,
-      0,
-      0,
-      0,
-      0,
-      0,
-      0,
-      0,
-      0,
-      0,
-      0,
-      3,
-    ];
-    return Gameboard(
-        initPuzzle: initialPuzzle,
-        solvedPuzzle: [],
-        level: Level.intermediate);
+    return Gameboard.from(InMemoryPuzzles.randomPuzzles[0]);
   }
 }

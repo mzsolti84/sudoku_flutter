@@ -5,6 +5,9 @@ import "package:sudoku_flutter/domain/interactor/game_action.dart";
 abstract class GameEvent {}
 
 class GameNewGameEvent extends GameEvent {
+  final int level;
+
+  GameNewGameEvent(this.level);
 }
 
 class GameNewGameWithFixPuzzleEvent extends GameEvent {
@@ -18,7 +21,7 @@ class GameGetUserUidEvent extends GameEvent {
 
 class GameActionEvent extends GameEvent {
   final PuzzleErrorCode errorCode;
+  final int? hitNumber;
 
-  GameActionEvent(this.errorCode);
-
+  GameActionEvent(this.errorCode, this.hitNumber);
 }
