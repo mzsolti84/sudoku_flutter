@@ -1,4 +1,5 @@
 import 'package:animated_button/animated_button.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_form_builder/flutter_form_builder.dart';
@@ -37,14 +38,31 @@ class LoginContent extends StatelessWidget {
           if (state is LoginFinished) {
             if (state.successfullyFinished) {
               Navigator.pushReplacementNamed(context, '/sudokuUI');
-            } else if (state.error != null) {
-              showCustomSnackBar(
-                buildContext: context,
-                text: 'Hibás felhasználónév és/vagy jelszó!',
-              );
+            } else if (state.error != null &&
+                state.error is FirebaseAuthException) {
+              var errorCode = (state.error as FirebaseAuthException).code;
+              switch (errorCode) {
+                case 'network-request-failed':
+                  showCustomSnackBar(
+                    buildContext: context,
+                    text: 'Hálózati hiba! Nincs internet elérhetőség!',
+                  );
+                  break;
+                case 'user-not-found':
+                  showCustomSnackBar(
+                    buildContext: context,
+                    text: 'Hibás felhasználónév és/vagy jelszó!',
+                  );
+                  break;
+                case 'wrong-password':
+                  showCustomSnackBar(
+                    buildContext: context,
+                    text: 'Hibás felhasználónév és/vagy jelszó!',
+                  );
+                  break;
+              }
             }
           } else if (state is LoginRegisterStart) {
-            debugPrint('BlocListener');
             Navigator.pushReplacementNamed(context, '/register');
           }
         },
@@ -99,8 +117,10 @@ FormBuilder _buildForm() {
                 controller: emailTextFieldController,
                 keyboardType: TextInputType.emailAddress,
                 validator: FormBuilderValidators.compose([
-                  FormBuilderValidators.required(errorText: 'A mező nem lehet üres'),
-                  FormBuilderValidators.email(errorText: 'Érvénytelen email formátum'),
+                  FormBuilderValidators.required(
+                      errorText: 'A mező nem lehet üres'),
+                  FormBuilderValidators.email(
+                      errorText: 'Érvénytelen email formátum'),
                 ]),
                 enabled: state is! LoginLoading,
                 decoration: InputDecoration(
@@ -211,7 +231,6 @@ FormBuilder _buildForm() {
                 height: 40,
                 shadowDegree: ShadowDegree.light,
                 onPressed: () {
-                  debugPrint('New button');
                   context.read<LoginBloc>().add(LoginRegisterStartEvent());
                 },
                 child: const Text(

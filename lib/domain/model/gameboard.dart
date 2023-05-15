@@ -21,11 +21,11 @@ class Gameboard {
         level: level);
   }
 
-  factory Gameboard.from(Gameboard from) {
+  factory Gameboard.from(Gameboard gbFrom) {
     return Gameboard(
-        initPuzzle: from.initPuzzle,
-        solvedPuzzle: from.solvedPuzzle,
-        level: from.level);
+        initPuzzle: List.from(gbFrom.initPuzzle),
+        solvedPuzzle: List.from(gbFrom.solvedPuzzle),
+        level: Level.values[gbFrom.level.index]);
   }
 }
 

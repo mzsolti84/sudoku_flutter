@@ -9,6 +9,7 @@ class GameAction {
   Position selectedPosition = Position.init();
   List<int> _mainPuzzle = List.generate(81, (_) => 0);
   List<int> _solvedPuzzle = List.generate(81, (_) => 0);
+  int hitCount = 0;
 
   final Moves moves = Moves();
   FixPositions fixPositions = FixPositions(List.generate(81, (_) => 0));
@@ -23,6 +24,7 @@ class GameAction {
     _mainPuzzle = List.from(puzzle);
     _solvedPuzzle = List.from(solvedPuzzle);
     fixPositions = FixPositions(puzzle);
+    hitCount = 0;
   }
 
   bool _isNotEmpty(Position position) {
@@ -98,7 +100,6 @@ class GameAction {
         result.remove(getCellValue(step.index));
       }
     }
-    debugPrint('In row: ${result.toString()}');
     return result;
   }
 
@@ -113,16 +114,12 @@ class GameAction {
         result.remove(getCellValue(step.index));
       }
     }
-    debugPrint('In col: ${result.toString()}');
     return result;
   }
 
   List<int> _getPossibleNumbersInBlock(Position position) {
     final int currentBlock =
         (((position.index ~/ 9) ~/ 3) * 3) + ((position.index % 9) ~/ 3);
-    // final int rowStart = (currentBlock ~/ 3) * 3;
-    // final int columnStart = (currentBlock % 3) * 3;
-    // debugPrint('Block: $currentBlock, $rowStart, $columnStart');
     List<Position> steps = List.from(moves.moves);
     steps.addAll(fixPositions.fixList);
     List<int> result = List.generate(9, (index) => index + 1);
@@ -133,7 +130,6 @@ class GameAction {
         result.remove(getCellValue(step.index));
       }
     }
-    debugPrint('In block: ${result.toString()}');
     return result;
   }
 
@@ -161,8 +157,11 @@ class GameAction {
   }
 
   int hit(Position position) {
-    if (!_isNotEmpty(position)) {
+    if (!_isNotEmpty(position) && hitCount < 8) {
+      hitCount++;
       return _solvedPuzzle[position.index];
+    } else if (!_isNotEmpty(position) && hitCount >= 8) {
+      return -2;
     }
     return -1;
   }
@@ -185,6 +184,7 @@ enum PuzzleErrorCode {
   invalidNumber(95, 'Ez a szám a sudoku szabályi szerint nem írható ide!'),
   invalidHit(96, 'Itt már van egy szám!'),
   invalidSolution(97, 'Ez nem egy helyes megoldás vagy nincs minden üres cella kitöltve!'),
+  noMoreHit(98, 'Nincs több súgás!'),
   okNumber(99, ''),
   okHit(101, '');
 

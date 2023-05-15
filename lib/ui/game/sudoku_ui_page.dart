@@ -61,8 +61,8 @@ class _SudokuUIState extends State<SudokuUI> {
                 icon: const Icon(Icons.exit_to_app),
                 onPressed: () {
                   context.read<LoginBloc>().add(
-                      LoginLogoutEvent(currentUser == null ? true : false),
-                    );
+                        LoginLogoutEvent(currentUser == null ? true : false),
+                      );
                   Navigator.pushReplacementNamed(context, '/login');
                 },
               ),
@@ -107,254 +107,277 @@ class _SudokuUIState extends State<SudokuUI> {
                 } else if (state is GameLoadedUser) {
                   currentUser = state.user;
                 }
-                return Center(
-                  child: Column(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceAround,
-                        children: [
-                          Text(
-                            'Játékszint: $gameLevel',
-                            style: const TextStyle(
-                                fontSize: 14, fontWeight: FontWeight.bold),
-                          ),
-                          Text(
-                            currentUser != null
-                                ? 'Játékos: ${currentUser!.firstName}'
-                                : 'Játékos: Anonymus',
-                            style: const TextStyle(
-                                fontSize: 14, fontWeight: FontWeight.bold),
-                          ),
-                        ],
-                      ),
-                      const SizedBox(height: 16),
-                      SizedBox(
-                        height: 576,
-                        width: 576,
-                        child: Stack(
+                return SingleChildScrollView(
+                  child: Center(
+                    child: Column(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceAround,
                           children: [
-                            if (state is GamePuzzleLoading)
-                              const Center(
-                                child: SizedBox(
-                                  width: 128,
-                                  height: 128,
-                                  child: CircularProgressIndicator(
-                                    strokeWidth: 8,
-                                  ),
-                                ),
-                              ),
-                            Container(
-                              decoration: BoxDecoration(
-                                border: Border.all(
-                                  color: Colors.black54,
-                                  width: 4,
-                                ),
-                              ),
-                              child: GridView.builder(
-                                gridDelegate:
-                                    const SliverGridDelegateWithFixedCrossAxisCount(
-                                  crossAxisCount: 9,
-                                  childAspectRatio: 1.0,
-                                  mainAxisSpacing: 2.0,
-                                  crossAxisSpacing: 2.0,
-                                ),
-                                itemCount: 81,
-                                itemBuilder: (context, index) {
-                                  Position currentPosition = Position(index);
-                                  Color textColor = gameAction.fixPositions
-                                          .isInTheFixList(currentPosition)
-                                      ? Colors.deepPurpleAccent
-                                      : Colors.black;
-                                  Color backgroundColor = Colors.transparent;
-                                  if (gameAction.isHighlightedValue(index)) {
-                                    backgroundColor = Theme.of(context)
-                                        .primaryColor
-                                        .withOpacity(0.5);
-                                  }
-
-                                  return GestureDetector(
-                                    onTap: () {
-                                      setState(() => gameAction
-                                          .selectedPosition = Position(index));
-                                      // Show the number pad widget in the bottom app bar
-                                      Scaffold.of(context).showBottomSheet(
-                                        (context) => _buildNumberPadWidget(),
-                                        backgroundColor: Theme.of(context)
-                                            .primaryColor
-                                            .withOpacity(0.75),
-                                      );
-                                    },
-                                    child: Stack(
-                                      children: [
-                                        Container(
-                                          decoration: BoxDecoration(
-                                            color: backgroundColor,
-                                            border: Border.all(
-                                              color: gameAction.selectedPosition
-                                                          .index ==
-                                                      index
-                                                  ? Colors.blueAccent
-                                                  : Colors.black,
-                                              width: 0.5,
-                                            ),
-                                          ),
-                                          child: Center(
-                                            child: Text(
-                                              gameAction.getCellValue(index) ==
-                                                      0
-                                                  ? ''
-                                                  : '${gameAction.getCellValue(index)}',
-                                              style: TextStyle(
-                                                  fontSize: 16.0,
-                                                  fontWeight: FontWeight.bold,
-                                                  color: textColor),
-                                            ),
-                                          ),
-                                        ),
-                                        if ((currentPosition.col % 3) == 0 &&
-                                            currentPosition.col != 8)
-                                          Container(
-                                            color: Colors.black54,
-                                            width: 2.0,
-                                            height: double.infinity,
-                                          ),
-                                        if ((currentPosition.row % 3) == 0 &&
-                                            currentPosition.row != 8)
-                                          Container(
-                                            color: Colors.black54,
-                                            width: double.infinity,
-                                            height: 2.0,
-                                          ),
-                                      ],
-                                    ),
-                                  );
-                                },
-                              ),
+                            Text(
+                              'Játékszint: $gameLevel',
+                              style: const TextStyle(
+                                  fontSize: 14, fontWeight: FontWeight.bold),
+                            ),
+                            Text(
+                              currentUser != null
+                                  ? 'Játékos: ${currentUser!.firstName}'
+                                  : 'Játékos: Anonymus',
+                              style: const TextStyle(
+                                  fontSize: 14, fontWeight: FontWeight.bold),
                             ),
                           ],
                         ),
-                      ),
-                    ],
+                        const SizedBox(height: 16),
+                        SizedBox(
+                          height: 576,
+                          width: 576,
+                          child: Stack(
+                            children: [
+                              if (state is GamePuzzleLoading)
+                                const Center(
+                                  child: SizedBox(
+                                    width: 128,
+                                    height: 128,
+                                    child: CircularProgressIndicator(
+                                      strokeWidth: 8,
+                                    ),
+                                  ),
+                                ),
+                              Container(
+                                decoration: BoxDecoration(
+                                  border: Border.all(
+                                    color: Colors.black54,
+                                    width: 4,
+                                  ),
+                                ),
+                                child: GridView.builder(
+                                  gridDelegate:
+                                      const SliverGridDelegateWithFixedCrossAxisCount(
+                                    crossAxisCount: 9,
+                                    childAspectRatio: 1.0,
+                                    mainAxisSpacing: 2.0,
+                                    crossAxisSpacing: 2.0,
+                                  ),
+                                  itemCount: 81,
+                                  itemBuilder: (context, index) {
+                                    Position currentPosition = Position(index);
+                                    Color textColor = gameAction.fixPositions
+                                            .isInTheFixList(currentPosition)
+                                        ? Colors.deepPurpleAccent
+                                        : Colors.black;
+                                    Color backgroundColor = Colors.transparent;
+                                    if (gameAction.isHighlightedValue(index)) {
+                                      backgroundColor = Theme.of(context)
+                                          .primaryColor
+                                          .withOpacity(0.5);
+                                    }
+
+                                    return GestureDetector(
+                                      onTap: () {
+                                        setState(() =>
+                                            gameAction.selectedPosition =
+                                                Position(index));
+                                        // Show the number pad widget in the bottom app bar
+                                        Scaffold.of(context).showBottomSheet(
+                                          (context) => _buildNumberPadWidget(),
+                                          backgroundColor: Theme.of(context)
+                                              .primaryColor
+                                              .withOpacity(0.75),
+                                        );
+                                      },
+                                      child: Stack(
+                                        children: [
+                                          AnimatedContainer(
+                                            curve: Curves.easeInOutSine,
+                                            duration: const Duration(
+                                                milliseconds: 660),
+                                            decoration: BoxDecoration(
+                                              color: backgroundColor,
+                                              border: Border.all(
+                                                color: gameAction
+                                                            .selectedPosition
+                                                            .index ==
+                                                        index
+                                                    ? Colors.blueAccent
+                                                    : Colors.black,
+                                                width: 0.5,
+                                              ),
+                                            ),
+                                            child: Center(
+                                              child: Text(
+                                                gameAction.getCellValue(
+                                                            index) ==
+                                                        0
+                                                    ? ''
+                                                    : '${gameAction.getCellValue(index)}',
+                                                style: TextStyle(
+                                                    fontSize: 16.0,
+                                                    fontWeight: FontWeight.bold,
+                                                    color: textColor),
+                                              ),
+                                            ),
+                                          ),
+                                          if ((currentPosition.col % 3) == 0 &&
+                                              currentPosition.col != 8)
+                                            Container(
+                                              color: Colors.black54,
+                                              width: 2.0,
+                                              height: double.infinity,
+                                            ),
+                                          if ((currentPosition.row % 3) == 0 &&
+                                              currentPosition.row != 8)
+                                            Container(
+                                              color: Colors.black54,
+                                              width: double.infinity,
+                                              height: 2.0,
+                                            ),
+                                        ],
+                                      ),
+                                    );
+                                  },
+                                ),
+                              ),
+                            ],
+                          ),
+                        ),
+                      ],
+                    ),
                   ),
                 );
               },
             ),
           ),
           bottomNavigationBar: BottomAppBar(
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.center,
+            child: Stack(
               children: [
-                IconButton(
-                  tooltip: 'Aktuális cellában szám törlése',
-                  icon: const Icon(Icons.delete),
-                  onPressed: () {
-                    var errorCode = gameAction.deleteValue();
-                    context
-                        .read<GameBloc>()
-                        .add(GameActionEvent(errorCode, null));
-                  },
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    IconButton(
+                      tooltip: 'Aktuális cellában szám törlése',
+                      icon: const Icon(Icons.delete),
+                      onPressed: () {
+                        var errorCode = gameAction.deleteValue();
+                        context
+                            .read<GameBloc>()
+                            .add(GameActionEvent(errorCode, null));
+                      },
+                    ),
+                    IconButton(
+                      tooltip: 'Visszavonás',
+                      icon: const Icon(Icons.undo),
+                      onPressed: () {
+                        var errorCode = gameAction.undo();
+                        context
+                            .read<GameBloc>()
+                            .add(GameActionEvent(errorCode, null));
+                      },
+                    ),
+                    IconButton(
+                      tooltip: 'Aktuális cellában megoldás mutatása',
+                      icon: const Icon(Icons.info),
+                      onPressed: () {
+                        int hitNumber =
+                            gameAction.hit(gameAction.selectedPosition);
+                        var errorCode = (hitNumber == -1
+                            ? PuzzleErrorCode.invalidHit
+                            : PuzzleErrorCode.noMoreHit);
+                        context.read<GameBloc>().add(
+                              GameActionEvent(
+                                  hitNumber < 0
+                                      ? errorCode
+                                      : PuzzleErrorCode.okHit,
+                                  hitNumber < 0 ? null : hitNumber),
+                            );
+                      },
+                    ),
+                    IconButton(
+                      tooltip: 'Teljes puzzle ellenőrzése',
+                      icon: const Icon(Icons.done_all),
+                      onPressed: () {
+                        var errorCode = gameAction.isSolved();
+                        context
+                            .read<GameBloc>()
+                            .add(GameActionEvent(errorCode, null));
+                      },
+                    ),
+                  ],
                 ),
-                IconButton(
-                  tooltip: 'Visszavonás',
-                  icon: const Icon(Icons.undo),
-                  onPressed: () {
-                    var errorCode = gameAction.undo();
-                    context
-                        .read<GameBloc>()
-                        .add(GameActionEvent(errorCode, null));
-                  },
-                ),
-                IconButton(
-                  tooltip: 'Aktuális cellában megoldás mutatása',
-                  icon: const Icon(Icons.info),
-                  onPressed: () {
-                    int hitNumber = gameAction.hit(gameAction.selectedPosition);
-                    context.read<GameBloc>().add(
-                          GameActionEvent(
-                              hitNumber == -1
-                                  ? PuzzleErrorCode.invalidHit
-                                  : PuzzleErrorCode.okHit,
-                              hitNumber == -1 ? null : hitNumber),
+                Positioned.fill(
+                  child: Align(
+                    alignment: Alignment.centerRight,
+                    child: IconButton(
+                      tooltip: 'Új játék',
+                      icon: const Icon(Icons.fiber_new_rounded),
+                      onPressed: () async {
+                        int? newGameLevel = 2;
+                        final levels = [
+                          'Kezdő',
+                          'Könnyű',
+                          'Haladó',
+                          'Nehéz',
+                          'Nagyon nehéz'
+                        ];
+                        var ng = await showDialog(
+                          context: context,
+                          builder: (context) => AlertDialog(
+                            icon: const Icon(Icons.fiber_new_rounded),
+                            title: const Text('Új játék'),
+                            content: FormBuilder(
+                              child: FormBuilderRadioGroup<int>(
+                                onChanged: (value) {
+                                  newGameLevel = value;
+                                },
+                                activeColor: Theme.of(context).primaryColor,
+                                decoration: const InputDecoration(
+                                  labelText: 'Nehézségi szint',
+                                ),
+                                initialValue: 2,
+                                name: 'level',
+                                options: levels
+                                    .map((level) => FormBuilderFieldOption(
+                                          value: levels.indexOf(level),
+                                          child: Text(level),
+                                        ))
+                                    .toList(growable: false),
+                                controlAffinity: ControlAffinity.trailing,
+                              ),
+                            ),
+                            actions: [
+                              TextButton(
+                                child: Text(
+                                  'Új játék',
+                                  style: TextStyle(
+                                      color: Theme.of(context).primaryColor),
+                                ),
+                                onPressed: () {
+                                  Navigator.pop(context, true);
+                                },
+                              ),
+                              TextButton(
+                                child: Text(
+                                  'Mégsem',
+                                  style: TextStyle(
+                                      color: Theme.of(context).primaryColor),
+                                ),
+                                onPressed: () {
+                                  Navigator.pop(context, false);
+                                },
+                              ),
+                            ],
+                          ),
                         );
-                  },
-                ),
-                IconButton(
-                  tooltip: 'Teljes puzzle ellenőrzése',
-                  icon: const Icon(Icons.done_all),
-                  onPressed: () {
-                    var errorCode = gameAction.isSolved();
-                    context
-                        .read<GameBloc>()
-                        .add(GameActionEvent(errorCode, null));
-                  },
-                ),
-                IconButton(
-                  icon: const Icon(Icons.fiber_new_rounded),
-                  onPressed: () async {
-                    int? newGameLevel = 2;
-                    final levels = [
-                      'Kezdő',
-                      'Könnyű',
-                      'Haladó',
-                      'Nehéz',
-                      'Nagyon nehéz'
-                    ];
-                    var ng = await showDialog(
-                      context: context,
-                      builder: (context) => AlertDialog(
-                        title: const Text('Új játék'),
-                        content: FormBuilder(
-                          child: FormBuilderRadioGroup<int>(
-                            onChanged: (value) {
-                              newGameLevel = value;
-                            },
-                            activeColor: Theme.of(context).primaryColor,
-                            decoration: const InputDecoration(
-                              labelText: 'Nehézségi szint',
-                            ),
-                            initialValue: 2,
-                            name: 'level',
-                            options: levels
-                                .map((level) => FormBuilderFieldOption(
-                                      value: levels.indexOf(level),
-                                      child: Text(level),
-                                    ))
-                                .toList(growable: false),
-                            controlAffinity: ControlAffinity.trailing,
-                          ),
-                        ),
-                        actions: [
-                          TextButton(
-                            child: Text(
-                              'Új játék',
-                              style: TextStyle(
-                                  color: Theme.of(context).primaryColor),
-                            ),
-                            onPressed: () {
-                              Navigator.pop(context, true);
-                            },
-                          ),
-                          TextButton(
-                            child: Text(
-                              'Mégsem',
-                              style: TextStyle(
-                                  color: Theme.of(context).primaryColor),
-                            ),
-                            onPressed: () {
-                              Navigator.pop(context, false);
-                            },
-                          ),
-                        ],
-                      ),
-                    );
-                    if (context.mounted && (ng is bool) && ng) {
-                      gameLevel = levels[newGameLevel!];
-                      context.read<GameBloc>().add(
-                            GameNewGameEvent(newGameLevel!),
-                          );
-                    }
-                  },
+                        if (context.mounted && (ng is bool) && ng) {
+                          gameLevel = levels[newGameLevel!];
+                          context.read<GameBloc>().add(
+                                GameNewGameEvent(newGameLevel!),
+                              );
+                        }
+                      },
+                    ),
+                  ),
                 ),
               ],
             ),
@@ -366,81 +389,87 @@ class _SudokuUIState extends State<SudokuUI> {
 
   // Build the number pad widget
   Widget _buildNumberPadWidget() {
-    return SizedBox(
-      height: 192,
-      child: Column(
-        children: [
-          for (int row = 0; row < 3; row++)
-            Expanded(
-              child: Row(
-                crossAxisAlignment: CrossAxisAlignment.center,
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  for (int col = 0; col < 3; col++)
-                    GestureDetector(
-                      onTap: () {
-                        var errorCode = gameAction
-                            .isContainsWrongValue((row * 3 + col + 1));
+    return GestureDetector(
+      behavior: HitTestBehavior.opaque,
+      onTap: () {
+        Navigator.of(context).pop();
+      },
+      child: SizedBox(
+        height: 192,
+        child: Column(
+          children: [
+            for (int row = 0; row < 3; row++)
+              Expanded(
+                child: Row(
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    for (int col = 0; col < 3; col++)
+                      GestureDetector(
+                        onTap: () {
+                          var errorCode = gameAction
+                              .isContainsWrongValue((row * 3 + col + 1));
 
-                        var errorCodeUpdate =
-                            gameAction.updateValue((row * 3 + col + 1));
-                        Navigator.of(context).pop();
+                          var errorCodeUpdate =
+                              gameAction.updateValue((row * 3 + col + 1));
+                          Navigator.of(context).pop();
 
-                        if (errorCodeUpdate != PuzzleErrorCode.none) {
-                          errorCode = errorCodeUpdate;
-                        }
-                        context
-                            .read<GameBloc>()
-                            .add(GameActionEvent(errorCode, null));
-                      },
-                      child: Padding(
-                        padding: const EdgeInsets.symmetric(
-                            vertical: 0, horizontal: 2),
-                        child: SizedBox(
-                          height: 60,
-                          child: Stack(
-                            children: [
-                              Positioned(
-                                bottom: 0,
-                                child: Container(
+                          if (errorCodeUpdate != PuzzleErrorCode.none) {
+                            errorCode = errorCodeUpdate;
+                          }
+                          context
+                              .read<GameBloc>()
+                              .add(GameActionEvent(errorCode, null));
+                        },
+                        child: Padding(
+                          padding: const EdgeInsets.symmetric(
+                              vertical: 0, horizontal: 2),
+                          child: SizedBox(
+                            height: 60,
+                            child: Stack(
+                              children: [
+                                Positioned(
+                                  bottom: 0,
+                                  child: Container(
+                                    height: 56,
+                                    width: 56,
+                                    decoration: const BoxDecoration(
+                                      color: Colors.black,
+                                      borderRadius: BorderRadius.all(
+                                        Radius.circular(16),
+                                      ),
+                                    ),
+                                  ),
+                                ),
+                                Container(
                                   height: 56,
                                   width: 56,
-                                  decoration: const BoxDecoration(
-                                    color: Colors.black,
-                                    borderRadius: BorderRadius.all(
+                                  decoration: BoxDecoration(
+                                    color: Theme.of(context)
+                                        .scaffoldBackgroundColor,
+                                    borderRadius: const BorderRadius.all(
                                       Radius.circular(16),
                                     ),
                                   ),
-                                ),
-                              ),
-                              Container(
-                                height: 56,
-                                width: 56,
-                                decoration: BoxDecoration(
-                                  color:
-                                      Theme.of(context).scaffoldBackgroundColor,
-                                  borderRadius: const BorderRadius.all(
-                                    Radius.circular(16),
-                                  ),
-                                ),
-                                child: Center(
-                                  child: Text(
-                                    '${(row * 3 + col + 1)}',
-                                    style: const TextStyle(
-                                      fontSize: 22,
+                                  child: Center(
+                                    child: Text(
+                                      '${(row * 3 + col + 1)}',
+                                      style: const TextStyle(
+                                        fontSize: 22,
+                                      ),
                                     ),
                                   ),
                                 ),
-                              ),
-                            ],
+                              ],
+                            ),
                           ),
                         ),
                       ),
-                    ),
-                ],
+                  ],
+                ),
               ),
-            ),
-        ],
+          ],
+        ),
       ),
     );
   }

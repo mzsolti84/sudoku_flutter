@@ -29,7 +29,6 @@ class RemoteGameboardDataSource {
             RemoteGameboardResponse.fromJson(initPuzzleResponse.data);
         var solvedResult =
             RemoteGameboardResponse.fromJson(solvedPuzzleResponse.data);
-        debugPrint(initResult.data.toString());
         return Gameboard(
             initPuzzle: initResult.data,
             solvedPuzzle: solvedResult.data,

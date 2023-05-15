@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:sudoku_flutter/ui/game/sudoku_ui_page.dart';
 import 'package:sudoku_flutter/ui/registration/registration.dart';
 
-import 'game/game_home_page.dart';
 import 'login/login.dart';
 
 class MainApp extends StatelessWidget {
@@ -11,8 +10,14 @@ class MainApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      title: 'Flutter Sudoku Demo',
+      title: 'Flutter Sudoku',
       theme: ThemeData(
+        pageTransitionsTheme: const PageTransitionsTheme(
+          builders: <TargetPlatform, PageTransitionsBuilder>{
+            TargetPlatform.android: FadeUpwardsPageTransitionsBuilder(),
+            TargetPlatform.windows: CupertinoPageTransitionsBuilder(),
+          },
+        ),
         brightness: Brightness.light,
         primaryColor: const Color.fromRGBO(140, 86, 73, 1),
         scaffoldBackgroundColor: const Color.fromRGBO(248, 184, 7, 1),
@@ -40,14 +45,7 @@ class MainApp extends StatelessWidget {
             ),
       },
       onGenerateRoute: (settings) {
-        if (settings.name == '/home') {
-          return MaterialPageRoute(
-            builder: (_) => GameHomePage(
-              title: 'Sudoku App',
-              uid: settings.arguments as String?,
-            ),
-          );
-        } else if (settings.name == '/sudokuUI') {
+        if (settings.name == '/sudokuUI') {
           return MaterialPageRoute(
             builder: (_) => SudokuUIPage(),
           );
