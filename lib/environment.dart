@@ -16,5 +16,7 @@ abstract class AppEnvironment{
 @Singleton(as: AppEnvironment)
 class DevEnvironment extends AppEnvironment{
   @override
-  String get userBaseUrl => 'http://localhost:10122/public/';
+  String get userBaseUrl => 'https://cloud-run-sudoku-java-6ytfnsgija-lm.a.run.app/public/';
 }
+
+// http://localhost:10122/public/

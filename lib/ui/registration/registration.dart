@@ -48,8 +48,8 @@ class RegistrationContent extends StatelessWidget {
                 showCustomSnackBar(
                     buildContext: context, text: 'Sikeres regisztráció!');
 
-                Future.delayed(const Duration(seconds: 1));
-                Navigator.pop(context);
+                Future.delayed(const Duration(seconds: 2));
+                await Navigator.pushReplacementNamed(context, '/sudokuUI');
               } else if (error != null) {
                 showCustomSnackBar(
                     buildContext: context,

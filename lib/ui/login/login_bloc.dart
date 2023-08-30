@@ -68,6 +68,6 @@ class LoginBloc extends Bloc<LoginEvent, LoginState> {
       }
     });
 
-    add(LoginTryAutoLoginEvent());
+    //add(LoginTryAutoLoginEvent());
   }
 }
